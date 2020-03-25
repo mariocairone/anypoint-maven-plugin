@@ -1,0 +1,1406 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "http://apimanager.com/apimanager.json",
+    "type": "object",
+    "title": "The Root Schema",
+    "description": "The root schema comprises the entire JSON document.",
+    "required": [
+        "apimanager"
+    ],
+    "properties": {
+        "apimanager": {
+            "$id": "#/properties/apimanager",
+            "type": "object",
+            "title": "The Apimanager Schema",
+            "description": "This is the configuration to apply in the API Manager",
+            "default": {},
+            "examples": [
+                {
+                    "environment": [
+                        {
+                            "name": "Development",
+                            "api": {
+                                "alerts": [
+                                    {
+                                        "period": {
+                                            "repeat": 3.0,
+                                            "duration": {
+                                                "count": 1.0,
+                                                "weight": "MINUTES"
+                                            }
+                                        },
+                                        "condition": {
+                                            "operator": "GREATER_THAN",
+                                            "value": 1.0,
+                                            "resourceType": "api",
+                                            "aggregate": "COUNT",
+                                            "filter": [
+                                                {
+                                                    "operator": "GREATER_THAN",
+                                                    "values": [
+                                                        10000.0
+                                                    ],
+                                                    "property": "responseTime"
+                                                }
+                                            ]
+                                        },
+                                        "severity": "Warning",
+                                        "name": "API HELLO WORLD Response Time Alert",
+                                        "recipients": [
+                                            {
+                                                "value": "246fefce.addisonlee.com@emea.teams.ms",
+                                                "type": "email"
+                                            }
+                                        ],
+                                        "enabled": true,
+                                        "type": "api-response-time"
+                                    },
+                                    {
+                                        "policyTemplate": {
+                                            "name": "Client ID enforcement",
+                                            "id": "client-id-enforcement"
+                                        },
+                                        "policyId": 437790.0,
+                                        "name": "API HELLO WORLD Policy Violation Alert",
+                                        "recipients": [
+                                            {
+                                                "type": "email",
+                                                "value": "246fefce.addisonlee.com@emea.teams.ms"
+                                            }
+                                        ],
+                                        "enabled": true,
+                                        "type": "api-policy-violation",
+                                        "severity": "Critical",
+                                        "condition": {
+                                            "operator": "GREATER_THAN",
+                                            "value": 2.0,
+                                            "resourceType": "api",
+                                            "aggregate": "COUNT"
+                                        },
+                                        "period": {
+                                            "repeat": 3.0,
+                                            "duration": {
+                                                "weight": "MINUTES",
+                                                "count": 1.0
+                                            }
+                                        }
+                                    }
+                                ],
+                                "policies": [
+                                    {
+                                        "assetId": "client-id-enforcement",
+                                        "groupId": "68ef9520-24e9-4cf2-b2f5-620025690913",
+                                        "assetVersion": "1.2.1",
+                                        "configurationData": {
+                                            "clientIdExpression": "#[attributes.headers['client_id']]",
+                                            "credentialsOriginHasHttpBasicAuthenticationHeader": "customExpression",
+                                            "clientSecretExpression": "#[attributes.headers['client_secret']]"
+                                        }
+                                    },
+                                    {
+                                        "configurationData": {
+                                            "maxContainerDepth": 10.0,
+                                            "maxObjectEntryNameLength": 255.0,
+                                            "maxStringValueLength": 1000.0,
+                                            "maxObjectEntryCount": 1000.0,
+                                            "maxArrayElementCount": 1000.0
+                                        },
+                                        "assetId": "json-threat-protection",
+                                        "groupId": "68ef9520-24e9-4cf2-b2f5-620025690913",
+                                        "assetVersion": "1.1.3"
+                                    }
+                                ],
+                                "id": 15601078.0,
+                                "properties": {
+                                    "endpoint": {
+                                        "muleVersion4OrAbove": true,
+                                        "uri": "https://dev.mariocairone.com/api-hello-world/v1"
+                                    },
+                                    "instanceLabel": "Dev1",
+                                    "assetVersion": "1.0.4",
+                                    "productVersion": "v1"
+                                },
+                                "tiers": [
+                                    {
+                                        "status": "ACTIVE",
+                                        "description": "Standard",
+                                        "name": "Standard",
+                                        "limits": [
+                                            {
+                                                "visible": true,
+                                                "maximumRequests": 20.0,
+                                                "timePeriodInMilliseconds": 60000.0
+                                            },
+                                            {
+                                                "visible": true,
+                                                "maximumRequests": 5.0,
+                                                "timePeriodInMilliseconds": 1000.0
+                                            }
+                                        ],
+                                        "autoApprove": true
+                                    },
+                                    {
+                                        "limits": [
+                                            {
+                                                "timePeriodInMilliseconds": 60000.0,
+                                                "visible": true,
+                                                "maximumRequests": 3.0
+                                            },
+                                            {
+                                                "timePeriodInMilliseconds": 3600000.0,
+                                                "visible": true,
+                                                "maximumRequests": 20.0
+                                            }
+                                        ],
+                                        "autoApprove": false,
+                                        "status": "ACTIVE",
+                                        "description": "Limited",
+                                        "name": "Limited"
+                                    },
+                                    {
+                                        "description": "Internal Use Only",
+                                        "name": "Internal Use Only",
+                                        "limits": [
+                                            {
+                                                "timePeriodInMilliseconds": 1000.0,
+                                                "visible": true,
+                                                "maximumRequests": 10000.0
+                                            }
+                                        ],
+                                        "autoApprove": false,
+                                        "status": "ACTIVE"
+                                    }
+                                ],
+                                "contracts": [
+                                    {
+                                        "application": {
+                                            "name": "ALG - Generic Developer Testing"
+                                        },
+                                        "tier": {
+                                            "name": "Standard"
+                                        },
+                                        "status": "APPROVED"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ],
+            "required": [
+                "environment"
+            ],
+            "properties": {
+                "assetId": {
+                    "$id": "#/properties/apimanager/properties/assetId",
+                    "type": "string",
+                    "title": "The Assetid Schema",
+                    "description": "The asset id ",
+                    "default": "",
+                    "examples": [
+                        "api-hello-world"
+                    ]
+                },
+                "environment": {
+                    "$id": "#/properties/apimanager/properties/environment",
+                    "type": "array",
+                    "title": "The Environment Schema",
+                    "description": "A collection of environment configurations",
+                    "default": [],
+                    "items": {
+                        "$id": "#/properties/apimanager/properties/environment/items",
+                        "type": "object",
+                        "title": "The Items Schema",
+                        "description": "A single environment configuration",
+                        "default": {},
+                        "examples": [
+                            {
+                                "name": "Development",
+                                "api": {
+                                    "tiers": [
+                                        {
+                                            "description": "Standard",
+                                            "name": "Standard",
+                                            "limits": [
+                                                {
+                                                    "timePeriodInMilliseconds": 60000.0,
+                                                    "visible": true,
+                                                    "maximumRequests": 20.0
+                                                },
+                                                {
+                                                    "timePeriodInMilliseconds": 1000.0,
+                                                    "visible": true,
+                                                    "maximumRequests": 5.0
+                                                }
+                                            ],
+                                            "autoApprove": true,
+                                            "status": "ACTIVE"
+                                        },
+                                        {
+                                            "description": "Limited",
+                                            "name": "Limited",
+                                            "limits": [
+                                                {
+                                                    "visible": true,
+                                                    "maximumRequests": 3.0,
+                                                    "timePeriodInMilliseconds": 60000.0
+                                                },
+                                                {
+                                                    "timePeriodInMilliseconds": 3600000.0,
+                                                    "visible": true,
+                                                    "maximumRequests": 20.0
+                                                }
+                                            ],
+                                            "autoApprove": false,
+                                            "status": "ACTIVE"
+                                        },
+                                        {
+                                            "status": "ACTIVE",
+                                            "description": "Internal Use Only",
+                                            "name": "Internal Use Only",
+                                            "limits": [
+                                                {
+                                                    "timePeriodInMilliseconds": 1000.0,
+                                                    "visible": true,
+                                                    "maximumRequests": 10000.0
+                                                }
+                                            ],
+                                            "autoApprove": false
+                                        }
+                                    ],
+                                    "contracts": [
+                                        {
+                                            "application": {
+                                                "name": "ALG - Generic Developer Testing"
+                                            },
+                                            "tier": {
+                                                "name": "Standard"
+                                            },
+                                            "status": "APPROVED"
+                                        }
+                                    ],
+                                    "alerts": [
+                                        {
+                                            "name": "API HELLO WORLD Response Time Alert",
+                                            "recipients": [
+                                                {
+                                                    "value": "246fefce.addisonlee.com@emea.teams.ms",
+                                                    "type": "email"
+                                                }
+                                            ],
+                                            "enabled": true,
+                                            "type": "api-response-time",
+                                            "condition": {
+                                                "operator": "GREATER_THAN",
+                                                "value": 1.0,
+                                                "resourceType": "api",
+                                                "aggregate": "COUNT",
+                                                "filter": [
+                                                    {
+                                                        "operator": "GREATER_THAN",
+                                                        "values": [
+                                                            10000.0
+                                                        ],
+                                                        "property": "responseTime"
+                                                    }
+                                                ]
+                                            },
+                                            "period": {
+                                                "duration": {
+                                                    "weight": "MINUTES",
+                                                    "count": 1.0
+                                                },
+                                                "repeat": 3.0
+                                            },
+                                            "severity": "Warning"
+                                        },
+                                        {
+                                            "period": {
+                                                "repeat": 3.0,
+                                                "duration": {
+                                                    "count": 1.0,
+                                                    "weight": "MINUTES"
+                                                }
+                                            },
+                                            "condition": {
+                                                "operator": "GREATER_THAN",
+                                                "value": 2.0,
+                                                "resourceType": "api",
+                                                "aggregate": "COUNT"
+                                            },
+                                            "severity": "Critical",
+                                            "policyTemplate": {
+                                                "id": "client-id-enforcement",
+                                                "name": "Client ID enforcement"
+                                            },
+                                            "name": "API HELLO WORLD Policy Violation Alert",
+                                            "policyId": 437790.0,
+                                            "recipients": [
+                                                {
+                                                    "value": "246fefce.addisonlee.com@emea.teams.ms",
+                                                    "type": "email"
+                                                }
+                                            ],
+                                            "enabled": true,
+                                            "type": "api-policy-violation"
+                                        }
+                                    ],
+                                    "policies": [
+                                        {
+                                            "assetId": "client-id-enforcement",
+                                            "groupId": "68ef9520-24e9-4cf2-b2f5-620025690913",
+                                            "assetVersion": "1.2.1",
+                                            "configurationData": {
+                                                "clientIdExpression": "#[attributes.headers['client_id']]",
+                                                "credentialsOriginHasHttpBasicAuthenticationHeader": "customExpression",
+                                                "clientSecretExpression": "#[attributes.headers['client_secret']]"
+                                            }
+                                        },
+                                        {
+                                            "configurationData": {
+                                                "maxContainerDepth": 10.0,
+                                                "maxObjectEntryNameLength": 255.0,
+                                                "maxStringValueLength": 1000.0,
+                                                "maxObjectEntryCount": 1000.0,
+                                                "maxArrayElementCount": 1000.0
+                                            },
+                                            "assetId": "json-threat-protection",
+                                            "groupId": "68ef9520-24e9-4cf2-b2f5-620025690913",
+                                            "assetVersion": "1.1.3"
+                                        }
+                                    ],
+                                    "id": 15601078.0,
+                                    "properties": {
+                                        "endpoint": {
+                                            "muleVersion4OrAbove": true,
+                                            "uri": "https://dev.mariocairone.com/api-hello-world/v1"
+                                        },
+                                        "instanceLabel": "Dev1",
+                                        "assetVersion": "1.0.4",
+                                        "productVersion": "v1"
+                                    }
+                                }
+                            }
+                        ],
+                        "required": [
+                            "name",
+                            "api"
+                        ],
+                        "properties": {
+                            "name": {
+                                "$id": "#/properties/apimanager/properties/environment/items/properties/name",
+                                "type": "string",
+                                "title": "The Name Schema",
+                                "description": "An explanation about the purpose of this instance.",
+                                "default": "",
+                                "examples": [
+                                    "Development"
+                                ]
+                            },
+                            "api": {
+                                "$id": "#/properties/apimanager/properties/environment/items/properties/api",
+                                "type": "object",
+                                "title": "The Api Schema",
+                                "description": "The API configuration",
+                                "default": {},
+                                "examples": [
+                                    {
+                                        "id": 15601078.0,
+                                        "properties": {
+                                            "endpoint": {
+                                                "muleVersion4OrAbove": true,
+                                                "uri": "https://dev.mariocairone.com/api-hello-world/v1"
+                                            },
+                                            "instanceLabel": "Dev1",
+                                            "assetVersion": "1.0.4",
+                                            "productVersion": "v1"
+                                        },
+                                        "tiers": [
+                                            {
+                                                "name": "Standard",
+                                                "limits": [
+                                                    {
+                                                        "timePeriodInMilliseconds": 60000.0,
+                                                        "visible": true,
+                                                        "maximumRequests": 20.0
+                                                    },
+                                                    {
+                                                        "visible": true,
+                                                        "maximumRequests": 5.0,
+                                                        "timePeriodInMilliseconds": 1000.0
+                                                    }
+                                                ],
+                                                "autoApprove": true,
+                                                "status": "ACTIVE",
+                                                "description": "Standard"
+                                            },
+                                            {
+                                                "name": "Limited",
+                                                "limits": [
+                                                    {
+                                                        "visible": true,
+                                                        "maximumRequests": 3.0,
+                                                        "timePeriodInMilliseconds": 60000.0
+                                                    },
+                                                    {
+                                                        "timePeriodInMilliseconds": 3600000.0,
+                                                        "visible": true,
+                                                        "maximumRequests": 20.0
+                                                    }
+                                                ],
+                                                "autoApprove": false,
+                                                "status": "ACTIVE",
+                                                "description": "Limited"
+                                            },
+                                            {
+                                                "description": "Internal Use Only",
+                                                "name": "Internal Use Only",
+                                                "limits": [
+                                                    {
+                                                        "timePeriodInMilliseconds": 1000.0,
+                                                        "visible": true,
+                                                        "maximumRequests": 10000.0
+                                                    }
+                                                ],
+                                                "autoApprove": false,
+                                                "status": "ACTIVE"
+                                            }
+                                        ],
+                                        "contracts": [
+                                            {
+                                                "tier": {
+                                                    "name": "Standard"
+                                                },
+                                                "status": "APPROVED",
+                                                "application": {
+                                                    "name": "ALG - Generic Developer Testing"
+                                                }
+                                            }
+                                        ],
+                                        "alerts": [
+                                            {
+                                                "type": "api-response-time",
+                                                "period": {
+                                                    "repeat": 3.0,
+                                                    "duration": {
+                                                        "weight": "MINUTES",
+                                                        "count": 1.0
+                                                    }
+                                                },
+                                                "condition": {
+                                                    "filter": [
+                                                        {
+                                                            "operator": "GREATER_THAN",
+                                                            "values": [
+                                                                10000.0
+                                                            ],
+                                                            "property": "responseTime"
+                                                        }
+                                                    ],
+                                                    "operator": "GREATER_THAN",
+                                                    "value": 1.0,
+                                                    "resourceType": "api",
+                                                    "aggregate": "COUNT"
+                                                },
+                                                "severity": "Warning",
+                                                "name": "API HELLO WORLD Response Time Alert",
+                                                "recipients": [
+                                                    {
+                                                        "type": "email",
+                                                        "value": "246fefce.addisonlee.com@emea.teams.ms"
+                                                    }
+                                                ],
+                                                "enabled": true
+                                            },
+                                            {
+                                                "policyId": 437790.0,
+                                                "name": "API HELLO WORLD Policy Violation Alert",
+                                                "recipients": [
+                                                    {
+                                                        "value": "246fefce.addisonlee.com@emea.teams.ms",
+                                                        "type": "email"
+                                                    }
+                                                ],
+                                                "enabled": true,
+                                                "type": "api-policy-violation",
+                                                "severity": "Critical",
+                                                "condition": {
+                                                    "operator": "GREATER_THAN",
+                                                    "value": 2.0,
+                                                    "resourceType": "api",
+                                                    "aggregate": "COUNT"
+                                                },
+                                                "period": {
+                                                    "repeat": 3.0,
+                                                    "duration": {
+                                                        "count": 1.0,
+                                                        "weight": "MINUTES"
+                                                    }
+                                                },
+                                                "policyTemplate": {
+                                                    "name": "Client ID enforcement",
+                                                    "id": "client-id-enforcement"
+                                                }
+                                            }
+                                        ],
+                                        "policies": [
+                                            {
+                                                "configurationData": {
+                                                    "clientIdExpression": "#[attributes.headers['client_id']]",
+                                                    "credentialsOriginHasHttpBasicAuthenticationHeader": "customExpression",
+                                                    "clientSecretExpression": "#[attributes.headers['client_secret']]"
+                                                },
+                                                "assetId": "client-id-enforcement",
+                                                "groupId": "68ef9520-24e9-4cf2-b2f5-620025690913",
+                                                "assetVersion": "1.2.1"
+                                            },
+                                            {
+                                                "assetId": "json-threat-protection",
+                                                "groupId": "68ef9520-24e9-4cf2-b2f5-620025690913",
+                                                "assetVersion": "1.1.3",
+                                                "configurationData": {
+                                                    "maxContainerDepth": 10.0,
+                                                    "maxObjectEntryNameLength": 255.0,
+                                                    "maxStringValueLength": 1000.0,
+                                                    "maxObjectEntryCount": 1000.0,
+                                                    "maxArrayElementCount": 1000.0
+                                                }
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "required": [
+                                    "id"
+                                ],
+                                "properties": {
+                                    "id": {
+                                        "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/id",
+                                        "type": "integer",
+                                        "title": "The Id Schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": 0,
+                                        "examples": [
+                                            15601078
+                                        ]
+                                    },
+                                    "properties": {
+                                        "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/properties",
+                                        "type": "object",
+                                        "title": "The Properties Schema",
+                                        "description": "The API properties",
+                                        "default": {},
+                                        "examples": [
+                                            {
+                                                "endpoint": {
+                                                    "muleVersion4OrAbove": true,
+                                                    "uri": "https://dev.mariocairone.com/api-hello-world/v1"
+                                                },
+                                                "instanceLabel": "Dev1",
+                                                "assetVersion": "1.0.4",
+                                                "productVersion": "v1"
+                                            }
+                                        ],
+                                        "properties": {
+                                            "assetVersion": {
+                                                "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/properties/properties/assetVersion",
+                                                "type": "string",
+                                                "title": "The Assetversion Schema",
+                                                "description": "The asset version",
+                                                "default": "",
+                                                "examples": [
+                                                    "1.0.4"
+                                                ]
+                                            },
+                                            "endpoint": {
+                                                "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/properties/properties/endpoint",
+                                                "type": "object",
+                                                "title": "The Endpoint Schema",
+                                                "description": "The endpoint configuration",
+                                                "default": {},
+                                                "examples": [
+                                                    {
+                                                        "muleVersion4OrAbove": true,
+                                                        "uri": "https://dev.mariocairone.com/api-hello-world/v1"
+                                                    }
+                                                ],
+                                                "properties": {
+                                                    "uri": {
+                                                        "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/properties/properties/endpoint/properties/uri",
+                                                        "type": "string",
+                                                        "title": "The Uri Schema",
+                                                        "description": "An explanation about the purpose of this instance.",
+                                                        "default": "",
+                                                        "examples": [
+                                                            "https://dev.mariocairone.com/api-hello-world/v1"
+                                                        ]
+                                                    },
+                                                    "muleVersion4OrAbove": {
+                                                        "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/properties/properties/endpoint/properties/muleVersion4OrAbove",
+                                                        "type": "boolean",
+                                                        "title": "The Muleversion4orabove Schema",
+                                                        "description": "An explanation about the purpose of this instance.",
+                                                        "default": false,
+                                                        "examples": [
+                                                            true
+                                                        ]
+                                                    }
+                                                }
+                                            },
+                                            "instanceLabel": {
+                                                "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/properties/properties/instanceLabel",
+                                                "type": "string",
+                                                "title": "The Instancelabel Schema",
+                                                "description": "An explanation about the purpose of this instance.",
+                                                "default": "",
+                                                "examples": [
+                                                    "Dev1"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "alerts": {
+                                        "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts",
+                                        "type": "array",
+                                        "title": "The Alerts Schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": [],
+                                        "items": {
+                                            "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items",
+                                            "type": "object",
+                                            "title": "The Items Schema",
+                                            "description": "An explanation about the purpose of this instance.",
+                                            "default": {},
+                                            "examples": [
+                                                {
+                                                    "period": {
+                                                        "duration": {
+                                                            "weight": "MINUTES",
+                                                            "count": 1.0
+                                                        },
+                                                        "repeat": 3.0
+                                                    },
+                                                    "condition": {
+                                                        "aggregate": "COUNT",
+                                                        "filter": [
+                                                            {
+                                                                "operator": "GREATER_THAN",
+                                                                "values": [
+                                                                    10000.0
+                                                                ],
+                                                                "property": "responseTime"
+                                                            }
+                                                        ],
+                                                        "operator": "GREATER_THAN",
+                                                        "value": 1.0,
+                                                        "resourceType": "api"
+                                                    },
+                                                    "severity": "Warning",
+                                                    "name": "API HELLO WORLD Response Time Alert",
+                                                    "recipients": [
+                                                        {
+                                                            "type": "email",
+                                                            "value": "246fefce.addisonlee.com@emea.teams.ms"
+                                                        }
+                                                    ],
+                                                    "enabled": true,
+                                                    "type": "api-response-time"
+                                                },
+                                                {
+                                                    "policyTemplate": {
+                                                        "id": "client-id-enforcement",
+                                                        "name": "Client ID enforcement"
+                                                    },
+                                                    "name": "API HELLO WORLD Policy Violation Alert",
+                                                    "policyId": 437790.0,
+                                                    "recipients": [
+                                                        {
+                                                            "type": "email",
+                                                            "value": "246fefce.addisonlee.com@emea.teams.ms"
+                                                        }
+                                                    ],
+                                                    "enabled": true,
+                                                    "type": "api-policy-violation",
+                                                    "period": {
+                                                        "repeat": 3.0,
+                                                        "duration": {
+                                                            "count": 1.0,
+                                                            "weight": "MINUTES"
+                                                        }
+                                                    },
+                                                    "condition": {
+                                                        "value": 2.0,
+                                                        "resourceType": "api",
+                                                        "aggregate": "COUNT",
+                                                        "operator": "GREATER_THAN"
+                                                    },
+                                                    "severity": "Critical"
+                                                }
+                                            ],
+                                            "required": [
+                                                "name"
+                                            ],
+                                            "properties": {
+                                                "name": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/name",
+                                                    "type": "string",
+                                                    "title": "The Name Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": "",
+                                                    "examples": [
+                                                        "API HELLO WORLD Response Time Alert"
+                                                    ]
+                                                },
+                                                "type": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/type",
+                                                    "type": "string",
+                                                    "title": "The Type Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": "",
+                                                    "examples": [
+                                                        "api-response-time"
+                                                    ]
+                                                },
+                                                "enabled": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/enabled",
+                                                    "type": "boolean",
+                                                    "title": "The Enabled Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": false,
+                                                    "examples": [
+                                                        true
+                                                    ]
+                                                },
+                                                "severity": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/severity",
+                                                    "type": "string",
+                                                    "title": "The Severity Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": "",
+                                                    "examples": [
+                                                        "Warning"
+                                                    ]
+                                                },
+                                                "recipients": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/recipients",
+                                                    "type": "array",
+                                                    "title": "The Recipients Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": [],
+                                                    "items": {
+                                                        "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/recipients/items",
+                                                        "type": "object",
+                                                        "title": "The Items Schema",
+                                                        "description": "An explanation about the purpose of this instance.",
+                                                        "default": {},
+                                                        "examples": [
+                                                            {
+                                                                "value": "246fefce.addisonlee.com@emea.teams.ms",
+                                                                "type": "email"
+                                                            }
+                                                        ],
+                                                        "required": [
+                                                            "type",
+                                                            "value"
+                                                        ],
+                                                        "properties": {
+                                                            "type": {
+                                                                "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/recipients/items/properties/type",
+                                                                "type": "string",
+                                                                "title": "The Type Schema",
+                                                                "description": "An explanation about the purpose of this instance.",
+                                                                "default": "",
+                                                                "examples": [
+                                                                    "email"
+                                                                ]
+                                                            },
+                                                            "value": {
+                                                                "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/recipients/items/properties/value",
+                                                                "type": "string",
+                                                                "title": "The Value Schema",
+                                                                "description": "An explanation about the purpose of this instance.",
+                                                                "default": "",
+                                                                "examples": [
+                                                                    "246fefce.addisonlee.com@emea.teams.ms"
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "condition": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/condition",
+                                                    "type": "object",
+                                                    "title": "The Condition Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": {},
+                                                    "examples": [
+                                                        {
+                                                            "resourceType": "api",
+                                                            "aggregate": "COUNT",
+                                                            "filter": [
+                                                                {
+                                                                    "operator": "GREATER_THAN",
+                                                                    "values": [
+                                                                        10000.0
+                                                                    ],
+                                                                    "property": "responseTime"
+                                                                }
+                                                            ],
+                                                            "operator": "GREATER_THAN",
+                                                            "value": 1.0
+                                                        }
+                                                    ],
+                                                    "required": [
+                                                        "resourceType",
+                                                        "aggregate",
+                                                        "operator",
+                                                        "value"
+                                                    ],
+                                                    "properties": {
+                                                        "resourceType": {
+                                                            "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/condition/properties/resourceType",
+                                                            "type": "string",
+                                                            "title": "The Resourcetype Schema",
+                                                            "description": "An explanation about the purpose of this instance.",
+                                                            "default": "",
+                                                            "examples": [
+                                                                "api"
+                                                            ]
+                                                        },
+                                                        "aggregate": {
+                                                            "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/condition/properties/aggregate",
+                                                            "type": "string",
+                                                            "title": "The Aggregate Schema",
+                                                            "description": "An explanation about the purpose of this instance.",
+                                                            "default": "",
+                                                            "examples": [
+                                                                "COUNT"
+                                                            ]
+                                                        },
+                                                        "operator": {
+                                                            "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/condition/properties/operator",
+                                                            "type": "string",
+                                                            "title": "The Operator Schema",
+                                                            "description": "An explanation about the purpose of this instance.",
+                                                            "default": "",
+                                                            "examples": [
+                                                                "GREATER_THAN"
+                                                            ]
+                                                        },
+                                                        "value": {
+                                                            "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/condition/properties/value",
+                                                            "type": "integer",
+                                                            "title": "The Value Schema",
+                                                            "description": "An explanation about the purpose of this instance.",
+                                                            "default": 0,
+                                                            "examples": [
+                                                                1
+                                                            ]
+                                                        },
+                                                        "filter": {
+                                                            "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/condition/properties/filter",
+                                                            "type": "array",
+                                                            "title": "The Filter Schema",
+                                                            "description": "An explanation about the purpose of this instance.",
+                                                            "default": [],
+                                                            "items": {
+                                                                "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/condition/properties/filter/items",
+                                                                "type": "object",
+                                                                "title": "The Items Schema",
+                                                                "description": "An explanation about the purpose of this instance.",
+                                                                "default": {},
+                                                                "examples": [
+                                                                    {
+                                                                        "operator": "GREATER_THAN",
+                                                                        "values": [
+                                                                            10000.0
+                                                                        ],
+                                                                        "property": "responseTime"
+                                                                    }
+                                                                ],
+                                                                "required": [
+                                                                    "property",
+                                                                    "operator",
+                                                                    "values"
+                                                                ],
+                                                                "properties": {
+                                                                    "property": {
+                                                                        "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/condition/properties/filter/items/properties/property",
+                                                                        "type": "string",
+                                                                        "title": "The Property Schema",
+                                                                        "description": "An explanation about the purpose of this instance.",
+                                                                        "default": "",
+                                                                        "examples": [
+                                                                            "responseTime"
+                                                                        ]
+                                                                    },
+                                                                    "operator": {
+                                                                        "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/condition/properties/filter/items/properties/operator",
+                                                                        "type": "string",
+                                                                        "title": "The Operator Schema",
+                                                                        "description": "An explanation about the purpose of this instance.",
+                                                                        "default": "",
+                                                                        "examples": [
+                                                                            "GREATER_THAN"
+                                                                        ]
+                                                                    },
+                                                                    "values": {
+                                                                        "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/condition/properties/filter/items/properties/values",
+                                                                        "type": "array",
+                                                                        "title": "The Values Schema",
+                                                                        "description": "An explanation about the purpose of this instance.",
+                                                                        "default": [],
+                                                                        "items": {
+                                                                            "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/condition/properties/filter/items/properties/values/items",
+                                                                            "type": "integer",
+                                                                            "title": "The Items Schema",
+                                                                            "description": "An explanation about the purpose of this instance.",
+                                                                            "default": 0,
+                                                                            "examples": [
+                                                                                10000
+                                                                            ]
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "period": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/period",
+                                                    "type": "object",
+                                                    "title": "The Period Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": {},
+                                                    "examples": [
+                                                        {
+                                                            "duration": {
+                                                                "weight": "MINUTES",
+                                                                "count": 1.0
+                                                            },
+                                                            "repeat": 3.0
+                                                        }
+                                                    ],
+                                                    "required": [
+                                                        "duration",
+                                                        "repeat"
+                                                    ],
+                                                    "properties": {
+                                                        "duration": {
+                                                            "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/period/properties/duration",
+                                                            "type": "object",
+                                                            "title": "The Duration Schema",
+                                                            "description": "An explanation about the purpose of this instance.",
+                                                            "default": {},
+                                                            "examples": [
+                                                                {
+                                                                    "count": 1.0,
+                                                                    "weight": "MINUTES"
+                                                                }
+                                                            ],
+                                                            "required": [
+                                                                "count",
+                                                                "weight"
+                                                            ],
+                                                            "properties": {
+                                                                "count": {
+                                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/period/properties/duration/properties/count",
+                                                                    "type": "integer",
+                                                                    "title": "The Count Schema",
+                                                                    "description": "An explanation about the purpose of this instance.",
+                                                                    "default": 0,
+                                                                    "examples": [
+                                                                        1
+                                                                    ]
+                                                                },
+                                                                "weight": {
+                                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/period/properties/duration/properties/weight",
+                                                                    "type": "string",
+                                                                    "title": "The Weight Schema",
+                                                                    "description": "An explanation about the purpose of this instance.",
+                                                                    "default": "",
+                                                                    "examples": [
+                                                                        "MINUTES"
+                                                                    ]
+                                                                }
+                                                            }
+                                                        },
+                                                        "repeat": {
+                                                            "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/alerts/items/properties/period/properties/repeat",
+                                                            "type": "integer",
+                                                            "title": "The Repeat Schema",
+                                                            "description": "An explanation about the purpose of this instance.",
+                                                            "default": 0,
+                                                            "examples": [
+                                                                3
+                                                            ]
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "tiers": {
+                                        "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/tiers",
+                                        "type": "array",
+                                        "title": "The Tiers Schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": [],
+                                        "items": {
+                                            "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/tiers/items",
+                                            "type": "object",
+                                            "title": "The Items Schema",
+                                            "description": "An explanation about the purpose of this instance.",
+                                            "default": {},
+                                            "examples": [
+                                                {
+                                                    "description": "Standard",
+                                                    "name": "Standard",
+                                                    "limits": [
+                                                        {
+                                                            "timePeriodInMilliseconds": 60000.0,
+                                                            "visible": true,
+                                                            "maximumRequests": 20.0
+                                                        },
+                                                        {
+                                                            "timePeriodInMilliseconds": 1000.0,
+                                                            "visible": true,
+                                                            "maximumRequests": 5.0
+                                                        }
+                                                    ],
+                                                    "autoApprove": true,
+                                                    "status": "ACTIVE"
+                                                },
+                                                {
+                                                    "limits": [
+                                                        {
+                                                            "timePeriodInMilliseconds": 60000.0,
+                                                            "visible": true,
+                                                            "maximumRequests": 3.0
+                                                        },
+                                                        {
+                                                            "visible": true,
+                                                            "maximumRequests": 20.0,
+                                                            "timePeriodInMilliseconds": 3600000.0
+                                                        }
+                                                    ],
+                                                    "autoApprove": false,
+                                                    "status": "ACTIVE",
+                                                    "description": "Limited",
+                                                    "name": "Limited"
+                                                },
+                                                {
+                                                    "status": "ACTIVE",
+                                                    "description": "Internal Use Only",
+                                                    "name": "Internal Use Only",
+                                                    "limits": [
+                                                        {
+                                                            "timePeriodInMilliseconds": 1000.0,
+                                                            "visible": true,
+                                                            "maximumRequests": 10000.0
+                                                        }
+                                                    ],
+                                                    "autoApprove": false
+                                                }
+                                            ],
+                                            "required": [
+                                                "name"
+                                            ],
+                                            "properties": {
+                                                "name": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/tiers/items/properties/name",
+                                                    "type": "string",
+                                                    "title": "The Name Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": "",
+                                                    "examples": [
+                                                        "Standard"
+                                                    ]
+                                                },
+                                                "description": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/tiers/items/properties/description",
+                                                    "type": "string",
+                                                    "title": "The Description Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": "",
+                                                    "examples": [
+                                                        "Standard"
+                                                    ]
+                                                },
+                                                "limits": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/tiers/items/properties/limits",
+                                                    "type": "array",
+                                                    "title": "The Limits Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": [],
+                                                    "items": {
+                                                        "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/tiers/items/properties/limits/items",
+                                                        "type": "object",
+                                                        "title": "The Items Schema",
+                                                        "description": "An explanation about the purpose of this instance.",
+                                                        "default": {},
+                                                        "examples": [
+                                                            {
+                                                                "timePeriodInMilliseconds": 60000.0,
+                                                                "visible": true,
+                                                                "maximumRequests": 20.0
+                                                            },
+                                                            {
+                                                                "visible": true,
+                                                                "maximumRequests": 5.0,
+                                                                "timePeriodInMilliseconds": 1000.0
+                                                            }
+                                                        ],
+                                                        "required": [
+                                                            "visible",
+                                                            "maximumRequests",
+                                                            "timePeriodInMilliseconds"
+                                                        ],
+                                                        "properties": {
+                                                            "visible": {
+                                                                "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/tiers/items/properties/limits/items/properties/visible",
+                                                                "type": "boolean",
+                                                                "title": "The Visible Schema",
+                                                                "description": "An explanation about the purpose of this instance.",
+                                                                "default": false,
+                                                                "examples": [
+                                                                    true
+                                                                ]
+                                                            },
+                                                            "maximumRequests": {
+                                                                "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/tiers/items/properties/limits/items/properties/maximumRequests",
+                                                                "type": "integer",
+                                                                "title": "The Maximumrequests Schema",
+                                                                "description": "An explanation about the purpose of this instance.",
+                                                                "default": 0,
+                                                                "examples": [
+                                                                    20
+                                                                ]
+                                                            },
+                                                            "timePeriodInMilliseconds": {
+                                                                "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/tiers/items/properties/limits/items/properties/timePeriodInMilliseconds",
+                                                                "type": "integer",
+                                                                "title": "The Timeperiodinmilliseconds Schema",
+                                                                "description": "An explanation about the purpose of this instance.",
+                                                                "default": 0,
+                                                                "examples": [
+                                                                    60000
+                                                                ]
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                "status": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/tiers/items/properties/status",
+                                                    "type": "string",
+                                                    "title": "The Status Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": "",
+                                                    "examples": [
+                                                        "ACTIVE"
+                                                    ]
+                                                },
+                                                "autoApprove": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/tiers/items/properties/autoApprove",
+                                                    "type": "boolean",
+                                                    "title": "The Autoapprove Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": false,
+                                                    "examples": [
+                                                        true
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "policies": {
+                                        "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/policies",
+                                        "type": "array",
+                                        "title": "The Policies Schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": [],
+                                        "items": {
+                                            "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/policies/items",
+                                            "type": "object",
+                                            "title": "The Items Schema",
+                                            "description": "An explanation about the purpose of this instance.",
+                                            "default": {},
+                                            "examples": [
+                                                {
+                                                    "configurationData": {
+                                                        "credentialsOriginHasHttpBasicAuthenticationHeader": "customExpression",
+                                                        "clientSecretExpression": "#[attributes.headers['client_secret']]",
+                                                        "clientIdExpression": "#[attributes.headers['client_id']]"
+                                                    },
+                                                    "assetId": "client-id-enforcement",
+                                                    "groupId": "68ef9520-24e9-4cf2-b2f5-620025690913",
+                                                    "assetVersion": "1.2.1"
+                                                },
+                                                {
+                                                    "groupId": "68ef9520-24e9-4cf2-b2f5-620025690913",
+                                                    "assetVersion": "1.1.3",
+                                                    "configurationData": {
+                                                        "maxContainerDepth": 10.0,
+                                                        "maxObjectEntryNameLength": 255.0,
+                                                        "maxStringValueLength": 1000.0,
+                                                        "maxObjectEntryCount": 1000.0,
+                                                        "maxArrayElementCount": 1000.0
+                                                    },
+                                                    "assetId": "json-threat-protection"
+                                                }
+                                            ],
+                                            "required": [
+                                                "configurationData"
+                                            ],
+                                            "properties": {
+                                                "groupId": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/policies/items/properties/groupId",
+                                                    "type": "string",
+                                                    "title": "The Groupid Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": "",
+                                                    "examples": [
+                                                        "68ef9520-24e9-4cf2-b2f5-620025690913"
+                                                    ]
+                                                },
+                                                "assetId": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/policies/items/properties/assetId",
+                                                    "type": "string",
+                                                    "title": "The Assetid Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": "",
+                                                    "examples": [
+                                                        "client-id-enforcement"
+                                                    ]
+                                                },
+                                                "assetVersion": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/policies/items/properties/assetVersion",
+                                                    "type": "string",
+                                                    "title": "The Assetversion Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": "",
+                                                    "examples": [
+                                                        "1.2.1"
+                                                    ]
+                                                },
+                                                "configurationData": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/policies/items/properties/configurationData",
+                                                    "type": "object",
+                                                    "title": "The Configurationdata Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": {},
+                                                    "examples": [
+                                                        {
+                                                            "clientIdExpression": "#[attributes.headers['client_id']]",
+                                                            "credentialsOriginHasHttpBasicAuthenticationHeader": "customExpression",
+                                                            "clientSecretExpression": "#[attributes.headers['client_secret']]"
+                                                        }
+                                                    ],
+                                                    "properties": {}
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "contracts": {
+                                        "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/contracts",
+                                        "type": "array",
+                                        "title": "The Contracts Schema",
+                                        "description": "An explanation about the purpose of this instance.",
+                                        "default": [],
+                                        "items": {
+                                            "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/contracts/items",
+                                            "type": "object",
+                                            "title": "The Items Schema",
+                                            "description": "An explanation about the purpose of this instance.",
+                                            "default": {},
+                                            "examples": [
+                                                {
+                                                    "application": {
+                                                        "name": "ALG - Generic Developer Testing"
+                                                    },
+                                                    "tier": {
+                                                        "name": "Standard"
+                                                    },
+                                                    "status": "APPROVED"
+                                                }
+                                            ],
+                                            "required": [
+                                                "application",
+                                                "status"
+                                            ],
+                                            "properties": {
+                                                "application": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/contracts/items/properties/application",
+                                                    "type": "object",
+                                                    "title": "The Application Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": {},
+                                                    "examples": [
+                                                        {
+                                                            "name": "ALG - Generic Developer Testing"
+                                                        }
+                                                    ],
+                                                    "required": [
+                                                        "name"
+                                                    ],
+                                                    "properties": {
+                                                        "name": {
+                                                            "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/contracts/items/properties/application/properties/name",
+                                                            "type": "string",
+                                                            "title": "The Name Schema",
+                                                            "description": "An explanation about the purpose of this instance.",
+                                                            "default": "",
+                                                            "examples": [
+                                                                "ALG - Generic Developer Testing"
+                                                            ]
+                                                        }
+                                                    }
+                                                },
+                                                "tier": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/contracts/items/properties/tier",
+                                                    "type": "object",
+                                                    "title": "The Tier Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": {},
+                                                    "examples": [
+                                                        {
+                                                            "name": "Standard"
+                                                        }
+                                                    ],
+                                                    "required": [
+                                                        "name"
+                                                    ],
+                                                    "properties": {
+                                                        "name": {
+                                                            "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/contracts/items/properties/tier/properties/name",
+                                                            "type": "string",
+                                                            "title": "The Name Schema",
+                                                            "description": "An explanation about the purpose of this instance.",
+                                                            "default": "",
+                                                            "examples": [
+                                                                "Standard"
+                                                            ]
+                                                        }
+                                                    }
+                                                },
+                                                "status": {
+                                                    "$id": "#/properties/apimanager/properties/environment/items/properties/api/properties/contracts/items/properties/status",
+                                                    "type": "string",
+                                                    "title": "The Status Schema",
+                                                    "description": "An explanation about the purpose of this instance.",
+                                                    "default": "",
+                                                    "examples": [
+                                                        "APPROVED"
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

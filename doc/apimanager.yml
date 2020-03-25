@@ -1,0 +1,143 @@
+---
+definitions:
+  tiers: 
+  
+    - &StandardTier
+      name: Standard 
+      description: Standard
+      limits:
+      - visible: true
+        maximumRequests: 20
+        timePeriodInMilliseconds: 60000
+      - visible: true
+        maximumRequests: 5
+        timePeriodInMilliseconds: 1000
+      status: ACTIVE
+      autoApprove: true
+      
+    - &InternalTier
+      name: Internal Use Only
+      description: Internal Use Only
+      limits:
+      - visible: true
+        maximumRequests: 10000
+        timePeriodInMilliseconds: 1000
+      status: ACTIVE
+      autoApprove: false
+      
+    - &LimitedTier
+      name: Limited
+      description: Limited
+      limits:
+      - visible: true
+        maximumRequests: 3
+        timePeriodInMilliseconds: 60000
+      - visible: true
+        maximumRequests: 20
+        timePeriodInMilliseconds: 3600000
+      status: ACTIVE
+      autoApprove: false
+  
+  policies: 
+ 
+    - &ClientIdEnforcementPolicy
+      groupId: 68ef9520-24e9-4cf2-b2f5-620025690913
+      assetId: client-id-enforcement
+      assetVersion: 1.2.1
+      configurationData:
+        credentialsOriginHasHttpBasicAuthenticationHeader: customExpression
+        clientIdExpression: "#[attributes.headers['client_id']]"
+        clientSecretExpression: "#[attributes.headers['client_secret']]"  
+        
+    - &JsonThreadProtectionPolicy
+      groupId: 68ef9520-24e9-4cf2-b2f5-620025690913
+      assetId: json-threat-protection
+      assetVersion: 1.1.3
+      configurationData:
+        maxContainerDepth: 10
+        maxStringValueLength: 1000
+        maxObjectEntryNameLength: 255
+        maxObjectEntryCount: 1000
+        maxArrayElementCount: 1000
+
+        
+  alerts:
+  
+    - &PolicyViolationAlert
+      name: API HELLO WORLD Policy Violation Alert
+      type: api-policy-violation
+      enabled: true
+      severity: Critical
+      recipients:
+      - type: email
+        value: 246fefce.addisonlee.com@emea.teams.ms
+      condition:
+        resourceType: api
+        aggregate: COUNT
+        operator: GREATER_THAN
+        value: 2
+      period:
+        duration:
+          count: 1
+          weight: MINUTES
+        repeat: 3
+      policyId: 437790
+      policyTemplate:
+        id: client-id-enforcement
+        name: Client ID enforcement
+        
+    - &ResponseTimeAlert
+      name: API HELLO WORLD Response Time Alert
+      type: api-response-time
+      enabled: true
+      severity: Warning
+      recipients:
+      - type: email
+        value: 246fefce.addisonlee.com@emea.teams.ms
+      condition:
+        resourceType: api
+        aggregate: COUNT
+        operator: GREATER_THAN
+        value: 1
+        filter:
+        - property: responseTime
+          operator: GREATER_THAN
+          values:
+            - 10000
+      period:
+        duration:
+          count: 1
+          weight: MINUTES
+        repeat: 3   
+        
+apimanager:
+  environment:
+    - name: "Development"
+      api:
+        id: 15601078
+        properties:
+          assetVersion: 1.0.4
+          productVersion: v1
+          endpoint:
+            uri: https://dev.mariocairone.com/api-hello-world/v1
+            muleVersion4OrAbove: true
+          instanceLabel: "Dev1"
+        alerts: 
+          - *ResponseTimeAlert 
+          - *PolicyViolationAlert
+        tiers: 
+          - *StandardTier
+          - *LimitedTier
+          - *InternalTier
+        policies:
+          - *ClientIdEnforcementPolicy
+          - *JsonThreadProtectionPolicy          
+        contracts:
+          - application:
+              name: Hello World Client
+            tier: 
+              name: Standard
+            status: APPROVED  
+        
+
+ 

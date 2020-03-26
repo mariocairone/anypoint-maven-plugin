@@ -27,8 +27,12 @@ public class PropertiesConfigurator implements Configurator {
 		
 		if(!isUpdated(config, api)) {
 			client.editApi(orgName, envName, apiId, config);
-			print("INFO","\tUPDATED: properties");
+			print("INFO","\tUpdated Properties");
+		
 		}
+		
+		print("INFO","Properties are Updated");
+
 	}
 
 }

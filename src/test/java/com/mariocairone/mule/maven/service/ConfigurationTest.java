@@ -29,8 +29,7 @@ public class ConfigurationTest {
 	
 	@Test
 	public void parseEmpty() throws Exception {
-		
-				
+					
 		Any config = service.parseConfiguration("");
 		
 		assertTrue(config.valueType().equals(ValueType.NULL));
@@ -100,9 +99,7 @@ public class ConfigurationTest {
 		builder.append("---\n")
 			   .append("apimanager:\n")
 		   	   .append(" environment:\n")
-		   	   .append("  - name: Development\n")
-//		   	   .append("    api:\n")
-//		   	   .append("     properties:\n")		   	   
+		   	   .append("  - name: Development\n")	   	   
 		   	   ;
 
 		service.parseConfiguration(builder.toString());

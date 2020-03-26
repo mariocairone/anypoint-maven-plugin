@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.mariocairone.mule</groupId>
 	<artifactId>anypoint-maven-plugin</artifactId>
-	<version>1.0.0.alpha</version>
+	<version>1.0.0.beta</version>
 	<packaging>maven-plugin</packaging>
 
 	<name>Anypoint Maven Plugin</name>

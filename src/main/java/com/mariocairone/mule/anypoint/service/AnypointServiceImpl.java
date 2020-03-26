@@ -74,45 +74,40 @@ public class AnypointServiceImpl implements AnypointService {
 	
 		Any apiProperties = environment.get("api","properties");
 		if(isDefined(apiProperties)) {
-			print("INFO","Processing Properties");
 			Configurator configurator = factory.createConfigurator("properties");
 			configurator.configure(apiId,apiProperties);
 		} 
 		
 		Any apiAlerts = environment.get("api","alerts");
 		if(isDefined(apiAlerts)) {
-			print("INFO","Processing Alerts");
 			Configurator configurator = factory.createConfigurator("alerts");
 			configurator.configure(apiId,apiAlerts);
 		} else {
-			print("INFO","Alerts not defined - Skip");
+			print("INFO","Skip Alerts");
 		}
 		
 		Any apiTiers = environment.get("api","tiers");
 		if(isDefined(apiTiers)) {
-			print("INFO","Processing Tiers");
 			Configurator configurator = factory.createConfigurator("tiers");
 			configurator.configure(apiId,apiTiers);
 		} else {
-			print("INFO","Tiers not defined - Skip");
+			print("INFO","Skip Tiers");
 		}
 		
 		Any apiPolicies = environment.get("api","policies");
 		if(isDefined(apiPolicies)) {
-			print("INFO","Processing Policies");
 			Configurator configurator = factory.createConfigurator("policies");
 			configurator.configure(apiId,apiPolicies);
 		} else {
-			print("INFO","Policies not defined - Skip");
+			print("INFO","Skip Policies");
 		}
 		
 		Any apiContracts = environment.get("api","contracts");
 		if(isDefined(apiContracts)) {
-			print("INFO","Processing Contracts");
 			Configurator configurator = factory.createConfigurator("contracts");
 			configurator.configure(apiId,apiContracts);
 		} else {
-			print("INFO","Contracts not defined - Skip");
+			print("INFO","Skip Contracts");
 		}
 		
 	}

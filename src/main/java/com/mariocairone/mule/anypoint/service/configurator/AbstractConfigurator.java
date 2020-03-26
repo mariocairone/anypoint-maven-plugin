@@ -32,6 +32,8 @@ public abstract class AbstractConfigurator implements Repository,Configurator {
 	
 	public void configure(Integer apiId, Any config) {
 		
+		beforeHook(apiId,config);
+		
 		Any resources = findAll(apiId);
 		
 		
@@ -74,13 +76,11 @@ public abstract class AbstractConfigurator implements Repository,Configurator {
 		//1 - delete all the resource that exist in the API Manager but not in the configuration defined in the configuration
 		toDelete.forEach( resource -> {
 			delete(apiId, resource);
-			print("INFO",String.format("\tDELETED: %s", getKey(resource).toString()));
 		});
 		
 		// 2 - create all the resource that exist in the configuration but not in the API Manager
 		toCreate.forEach( resourceConfig -> {
 			create(apiId, resourceConfig);
-			print("INFO",String.format("\tCREATED: %s", getKey(resourceConfig).toString()));
 		});
 		
 		// 3 - update all the resources that exists in both configuration and API Manager
@@ -95,25 +95,28 @@ public abstract class AbstractConfigurator implements Repository,Configurator {
 			
 			if(!isUpdated(resourceConfig,currentResource)) {
 				
-				update(apiId, currentResource,resourceConfig);
-				
-				print("INFO",String.format("\tUPDATED: %s", getKey(currentResource).toString()));
+				update(apiId, currentResource,resourceConfig);				
 			}
 		});			
-		
+
+		afterHook(apiId,config);
 		
 	}
 	
 	public abstract String getKeyName(Any config);
 	
-	public  Any getKeys(Any config) {
+	protected  Any getKeys(Any config) {
 		Any any = config.get('*', getKeyName(config));
 		return AnyUtils.isPresent(any) ? any : Any.wrap(new HashSet<>());
 	};
 	
-	public Any getKey(Any config) {
+	protected Any getKey(Any config) {
 		Any any = config.get(getKeyName(config));
 		return AnyUtils.isPresent(any) ? any : Any.wrapNull();
 	} 
+	
+	
+	protected void afterHook(Integer apiId, Any config) {}
+	protected void beforeHook(Integer apiId, Any config) {}
 	
 }

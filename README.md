@@ -31,7 +31,7 @@ Add the plugin to the `pom.xml`
 <plugin>
     <groupId>com.mariocairone.mule</groupId>
     <artifactId>anypoint-maven-plugin</artifactId>
-    <version>1.0.0.alpha</version>
+    <version>1.0.0.beta</version>
     <configuration>
         <server>anypoint</server>
         <organization>${organization}</organization>
@@ -40,6 +40,14 @@ Add the plugin to the `pom.xml`
     </configuration>
 </plugin>		
 ```
+
+### Enable Request/Response logging
+
+To enable request/response logging for for all the API calls to the Anypoint Platform API please configure the following system property:
+
+| Name                    | Value |
+| ----------------------- | ----- |
+| *anypoint.client.debug* | true  |
 
 ## Plugin Configuration
 
@@ -168,8 +176,8 @@ for more details please refer to the [Anypoint Manager API - Documentation](http
 
 The `tiers` is a collection of alert objects.
 
-| Name                                          | Type   | Description                   | Required |
-| --------------------------------------------- | ------ | ----------------------------- | -------- |
+| Name                                         | Type   | Description                  | Required |
+| -------------------------------------------- | ------ | ---------------------------- | -------- |
 | *apimanager.environment[].api.* tiers        | array  | A collection of Tiers        | false    |
 | *apimanager.environment[].api.* tiers[]      | object | A single Tier configuration. | true     |
 | *apimanager.environment[].api.tiers[].* name | string | The name of the Tier         | true     |
@@ -188,8 +196,8 @@ The `name` of the tier is used as key to determine if it already exists and must
 For the abject in the collection any instance of data is allowed.
 Each object is converted to JSON and used in the following calls:
 
- | Method  | Resource                                                                                                   |
- | ------- | ---------------------------------------------------------------------------------------------------------- |
+ | Method  | Resource                                                                                                  |
+ | ------- | --------------------------------------------------------------------------------------------------------- |
  | `POST`  | `/apimanager/api/v1/organizations/:organizationId/environments/:environmentId/apis/:apiId/tiers`          |
  | `PATCH` | `/apimanager/api/v1/organizations/:organizationId/environments/:environmentId/apis/:apiId/alerts/:tierId` |
 
@@ -219,10 +227,10 @@ For Mule 4 APIs the `assetId` of the policy is used as key to determine if it al
 For the abject in the collection any instance of data is allowed.
 Each object is converted to JSON and used in the following calls:
 
-| Method  | Resource                                                                                                   |
- | ------- | ---------------------------------------------------------------------------------------------------------- |
- | `POST`  | `/apimanager/api/v1/organizations/:organizationId/environments/:environmentId/apis/:apiId/policies`          |
- | `PATCH` | `/apimanager/api/v1/organizations/:organizationId/environments/:environmentId/apis/:apiId/policies/:policyId` |
+| Method  | Resource                                                                                                      |
+| ------- | ------------------------------------------------------------------------------------------------------------- |
+| `POST`  | `/apimanager/api/v1/organizations/:organizationId/environments/:environmentId/apis/:apiId/policies`           |
+| `PATCH` | `/apimanager/api/v1/organizations/:organizationId/environments/:environmentId/apis/:apiId/policies/:policyId` |
 
 for more details please refer to the [Anypoint Manager API - Documentation](https://anypoint.mulesoft.com/exchange/portals/anypoint-platform/f1e97bc6-315a-4490-82a7-23abe036327a.anypoint-platform/api-manager-api/minor/1.0/pages/home/)
 
@@ -257,8 +265,6 @@ When the plugin process the contracts it will:
  - removed the contracts if they exist in the API Manager but are not configured
 
 #### Configuration File Example
-
-A full example is available [here](doc/apimanager.yml)
 
 ```yaml
 ---
@@ -322,7 +328,15 @@ definitions:
         maxObjectEntryNameLength: 255
         maxObjectEntryCount: 1000
         maxArrayElementCount: 1000
-
+    - &IpWhitelistPolicy
+      groupId: 68ef9520-24e9-4cf2-b2f5-620025690913
+      assetId: ip-whitelist
+      assetVersion: 1.2.1
+      configurationData:
+        ipExpression: "#[attributes.remoteAddress]"
+        ips:
+        - 192.168.1.1
+        - 192.168.0.2
         
   alerts:
   
@@ -393,20 +407,13 @@ apimanager:
           - *LimitedTier
           - *InternalTier
         policies:
+          - *IpWhitelistPolicy          
           - *ClientIdEnforcementPolicy
           - *JsonThreadProtectionPolicy          
         contracts:
           - application:
               name: Hello World Client
             tier: 
-              name: Standard
-            status: APPROVED  
-        
-
- 
+              name: Standard 
+            status: APPROVED 
 ```
-
-## Limitation 
-
-- Policy reorder not yet supported
-- Contract tier can be changed only if status is APPROVED 

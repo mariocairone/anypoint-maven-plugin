@@ -1,5 +1,7 @@
 package com.mariocairone.mule.anypoint.service.configurator;
 
+import static com.mariocairone.mule.anypoint.service.utils.Console.print;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -21,21 +23,25 @@ public class ContractsConfigurator extends AbstractConfigurator {
 	}
 
 	@Override
-	public Any delete(Integer apiId, Any resource) {
-		Integer contractId = resource.toInt("id");
-		String status = resource.toString("status");
+	public Any delete(Integer apiId, Any config) {
+		Integer contractId = config.toInt("id");
+		String status = config.toString("status");
 		if(status.equals("APPROVED"))
 			client.revokeContract(orgName, envName, apiId, contractId);
-				
-		return client.deleteContract(orgName, envName, apiId, contractId);
 		
+		
+		Any result = client.deleteContract(orgName, envName, apiId, contractId);
+		
+		print("INFO",String.format("\tDeleted Contract: %s", getKey(config).toString()));
+
+		return result;
 	}
 
 	@Override
 	public Any create(Integer apiId, Any config) {
 		
 		String applicationName = config.toString("application","name");
-		
+				
 		Map<String,Object> queryParams = new HashMap<>();
 		
 		queryParams.put("limit", 100);
@@ -58,6 +64,10 @@ public class ContractsConfigurator extends AbstractConfigurator {
 				
 				if(AnyUtils.isPresent(applicationTier))
 					tierId = applicationTier.toInt("id");			
+				else {
+				   print("INFO",String.format("\tContract tier %s not found. Skip contract creation.", tierName ));
+				   return Any.wrapNull();
+				}
 				
 			}
 			
@@ -73,7 +83,14 @@ public class ContractsConfigurator extends AbstractConfigurator {
 			if(config.toString("status").equals("APPROVED"))
 				client.approveContract(orgName, envName, apiId, contract.toInt("id"));
 			
+			print("INFO",String.format("\tCreated Contract: %s", getKey(config).toString()));
+
 			return contract;
+			
+		} else {
+
+			print("INFO",String.format("\tApplication '%s' not found. Skip Contract", getKey(config).toString()));
+
 		}
 		
 		return Any.wrapNull();
@@ -84,10 +101,13 @@ public class ContractsConfigurator extends AbstractConfigurator {
 		String status = config.toString("status");
 		Integer contractId = resource.toInt("id");
 		if(!status.equals(resource.toString("status"))) {
-			if(status.equals("APPROVED"))
+			if(status.equals("APPROVED")) {
 				client.approveContract(orgName, envName, apiId, contractId);
-			else if( status.equals("REVOKED")) 
+				status = "APPROVED";
+			} else if( status.equals("REVOKED")) {
 				client.revokeContract(orgName, envName, apiId, contractId);
+				status = "REVOKED";
+			}	
 			
 		}	
 		
@@ -99,6 +119,10 @@ public class ContractsConfigurator extends AbstractConfigurator {
 				 
 			if(AnyUtils.isPresent(existingTier) || !tierName.toString().equals(existingTier.toString())) {
 				
+				if(!status.equals("APPROVED"))
+					client.approveContract(orgName, envName, apiId, contractId);
+				
+				
 				Any requestedTier = getTier(apiId, tierName.toString());
 				
 				
@@ -107,10 +131,17 @@ public class ContractsConfigurator extends AbstractConfigurator {
 
 				
 				client.editContract(orgName, envName, apiId, contractId, body);
-				
-			}
 
-			
+				if(!status.equals("APPROVED"))
+					client.revokeContract(orgName, envName, apiId, contractId);
+				
+				print("INFO",String.format("\tUpdated Contract: %s", getKey(config).toString()));
+
+			}
+	
+		} else {
+			print("INFO",String.format("\tTier not defined %s", getKey(config).toString()));
+
 		}
 		
 		
@@ -157,5 +188,11 @@ public class ContractsConfigurator extends AbstractConfigurator {
 		}
 		
 		return Any.wrapNull();
+	}
+	
+	
+	@Override
+	protected void afterHook(Integer apiId, Any config) {
+		print("INFO","Contracts are Updated");
 	}
 }

@@ -1,7 +1,5 @@
 package com.mariocairone.mule.anypoint.service.configurator;
 
-import static com.mariocairone.mule.anypoint.service.utils.Console.print;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;

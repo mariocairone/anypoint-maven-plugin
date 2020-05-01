@@ -31,7 +31,7 @@ Add the plugin to the `pom.xml`
 <plugin>
     <groupId>com.mariocairone.mule</groupId>
     <artifactId>anypoint-maven-plugin</artifactId>
-    <version>1.0.0.beta</version>
+    <version>1.0.0.rc1</version>
     <configuration>
         <server>anypoint</server>
         <organization>${organization}</organization>

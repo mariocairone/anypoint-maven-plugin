@@ -45,6 +45,12 @@ public class PoliciesConfigurator extends AbstractConfigurator {
 	@Override
 	public Any update(Integer apiId, Any resource, Any config) {
 		Integer policyId = resource.toInt("id");
+		
+		Any policyTemplateId = resource.get("policyTemplateId");
+		
+		if(!policyTemplateId.valueType().equals(ValueType.INVALID))
+			config.asMap().put("policyTemplateId", Any.wrap(policyTemplateId));
+		
 		config.asMap().put("id", Any.wrap(policyId));
 		
 		Any result = client.editPolicy(orgName, envName, apiId, policyId,config);
